@@ -26,13 +26,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="p-5">
+    <html lang="en" >
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Theme>
         <Navbar/>
-        <main>
+        <main className="p-5">
           {children}
         </main>
         </Theme>
