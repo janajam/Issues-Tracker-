@@ -11,6 +11,7 @@ import SimpleMDE from "react-simplemde-editor";
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import ErrorMessage from '@/app/components/ErrorMessage';
+import Spinner from '@/app/components/Spinner';
 
 type IssueForm = z.infer<typeof createIssueSchema>
 
@@ -20,6 +21,7 @@ const NewIssue = () => {
     })
     const router = useRouter()
     const [error, setError] = useState('')
+    const [isSubmission , setIsSubmission]=useState(false)
 
     return (
         <div className='max-w-xl'>
@@ -31,11 +33,12 @@ const NewIssue = () => {
             <form className='space-y-4'
                 onSubmit={handleSubmit(async (data) => {
                     try {
-
+                        setIsSubmission(true)
                         await axios.post('/api/issues', data);
                         router.push('/issues');
                     }
                     catch (error) {
+                        setIsSubmission(false)
                         setError('an unexpected error occurred')
                     }
                 })}>
@@ -47,7 +50,7 @@ const NewIssue = () => {
                 />
 
                 <ErrorMessage>{errors.description?.message} </ErrorMessage>
-                <Button>Submit New Issue</Button>
+                <Button disabled={isSubmission}>Submit New Issue {isSubmission && <Spinner/>}</Button>
             </form >
         </div>
 
