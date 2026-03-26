@@ -22,6 +22,7 @@ const NewIssue = () => {
     const router = useRouter()
     const [error, setError] = useState('')
     const [isSubmission, setIsSubmission] = useState(false)
+    
     const onSubmit = handleSubmit(async (data) => {
         try {
             setIsSubmission(true)
