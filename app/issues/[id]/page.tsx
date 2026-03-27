@@ -2,9 +2,11 @@ import { prisma } from '@/prisma/client'
 import { notFound } from 'next/navigation'
 import React from 'react'
 import delay from 'delay'
+import { Card, Flex, Heading, Text } from '@radix-ui/themes'
+import IssueStatusBadge from '@/app/components/IssueStatusBadge'
 
 const IssueDetailsPage = async ({ params }: { params: { id: string } }) => {
-    
+
     await delay(1000)
     const issue = await prisma.issue.findUnique({
         where: {
@@ -17,18 +19,23 @@ const IssueDetailsPage = async ({ params }: { params: { id: string } }) => {
 
     return (
         <div>
-            <p>
+            <Heading>
                 {issue.title}
-            </p>
-            <p>
-                {issue.description}
-            </p>
-            <p>
-                {issue.status}
-            </p>
-            <p>
-                {issue.createdAt.toDateString()}
-            </p>
+            </Heading>
+            <Flex className='space-x-5' my={'2'}>
+                <IssueStatusBadge status={issue.status} />
+                <Text>
+                    {issue.createdAt.toDateString()}
+                </Text>
+            </Flex>
+            <Card>
+                
+                <p>
+                    {issue.description}
+                </p>
+            </Card>
+
+
         </div>
     )
 }
