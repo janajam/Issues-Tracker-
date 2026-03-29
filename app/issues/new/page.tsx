@@ -2,7 +2,7 @@
 
 import ErrorMessage from '@/app/components/ErrorMessage';
 import Spinner from '@/app/components/Spinner';
-import { createIssueSchema } from '@/app/createIssueSchema';
+import { createIssueSchema } from '@/app/IssueSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Callout, TextField } from '@radix-ui/themes';
 import axios from 'axios';
