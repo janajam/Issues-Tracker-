@@ -1,5 +1,4 @@
 
-import { Issue } from '@prisma/client'
 import React from 'react'
 import IssueForm from '../../_component/IssueForm'
 import { prisma } from '@/prisma/client'

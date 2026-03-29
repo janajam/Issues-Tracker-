@@ -2,7 +2,7 @@
 
 import ErrorMessage from '@/app/components/ErrorMessage';
 import Spinner from '@/app/components/Spinner';
-import { createIssueSchema } from '@/app/IssueSchema';
+import { IssueSchema } from '@/app/IssueSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Issue } from '@prisma/client';
 import { Button, Callout, TextField } from '@radix-ui/themes';
@@ -14,30 +14,33 @@ import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-const SimpleMDE= dynamic(
-    ()=>import('react-simplemde-editor'),
-    {ssr:false}
+const SimpleMDE = dynamic(
+    () => import('react-simplemde-editor'),
+    { ssr: false }
 )
-type IssueFormData = z.infer<typeof createIssueSchema>
+type IssueFormData = z.infer<typeof IssueSchema>
 
-const IssueForm = ({issue}:{issue?:Issue}) => {
+const IssueForm = ({ issue }: { issue?: Issue }) => {
     const { register, control, handleSubmit, formState: { errors } } = useForm<IssueFormData>({
-        resolver: zodResolver(createIssueSchema)
+        resolver: zodResolver(IssueSchema)
     })
     const router = useRouter()
     const [error, setError] = useState('')
     const [isSubmission, setIsSubmission] = useState(false)
-    
+
     const onSubmit = handleSubmit(async (data) => {
         try {
             setIsSubmission(true)
-            await axios.post('/api/issues', data);
+            if (issue)
+                await axios.patch('/api/issues/' + issue.id, data)
+            else
+                await axios.post('/api/issues', data);
             router.push('/issues');
         }
         catch (error) {
             setIsSubmission(false)
             setError('an unexpected error occurred')
-        } 
+        }
     })
 
     return (
@@ -53,11 +56,14 @@ const IssueForm = ({issue}:{issue?:Issue}) => {
                 <ErrorMessage>{errors.title?.message}</ErrorMessage>
 
                 <Controller name='description' defaultValue={issue?.description} control={control}
-                    render={({ field }) => <SimpleMDE  placeholder="Description ..." {...field} />}
+                    render={({ field }) => <SimpleMDE placeholder="Description ..." {...field} />}
                 />
 
                 <ErrorMessage>{errors.description?.message} </ErrorMessage>
-                <Button disabled={isSubmission}>Submit New Issue {isSubmission && <Spinner />}</Button>
+                <Button disabled={isSubmission}>
+                    {issue ? 'Update Issue' : 'Submit New Issue'} {' '}
+                    {isSubmission && <Spinner />}
+                </Button>
             </form >
         </div>
 
