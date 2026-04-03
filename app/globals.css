@@ -24,3 +24,10 @@ body {
   color: var(--foreground);
   
 }
+@layer utilities{
+  .nav-link{
+    @apply text-zinc-400  hover:text-zinc-700 transition-colors
+                                          
+
+  }
+}
