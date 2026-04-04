@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "./Navbar";
 import AuthProvider from "./auth/Provider";
+import QueryClientProvider from "./QueryClientProvider";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -28,21 +29,21 @@ export default function RootLayout({
   return (
     <html lang="en"  >
       <body
-        // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <AuthProvider>
-          
+        <QueryClientProvider>
+          <AuthProvider>
             <Theme accentColor="violet">
-          <Navbar/>
-          <main className="p-5">
-            <Container>
-          
-              {children}
-          </Container>
-          </main>
-          </Theme>
-             </AuthProvider>
-    
+              <Navbar />
+              <main className="p-5">
+                <Container>
+
+                  {children}
+                </Container>
+              </main>
+            </Theme>
+          </AuthProvider>
+        </QueryClientProvider>
       </body>
     </html>
   );
