@@ -35,7 +35,8 @@ const IssueDetailsPage = async ({ params }: { params: { id: string } }) => {
                         <EditIssueButton issueId={issue.id} />
                         <DeleteIssueButton issueId={issue.id} />
                     </Flex>
-                </Box>}
+                </Box>
+                }
         </Grid >
     )
 }
