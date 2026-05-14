@@ -1,42 +1,54 @@
 'use client'
 import { Status } from '@prisma/client'
 import { Select } from '@radix-ui/themes'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import React from 'react'
 
-const statuses :{lable : string , value : string}[]=[
-    {lable: 'All', value: 'ALL' },
-    {lable:'Open' , value:'OPEN'},
-    {lable : 'InProgress', value:'INPROGRESS'},
-    {lable :'Closed' , value:'CLOSED'}
+const statuses: { lable: string, value: string }[] = [
+  { lable: 'All', value: 'ALL' },
+  { lable: 'Open', value: 'OPEN' },
+  { lable: 'InProgress', value: 'INPROGRESS' },
+  { lable: 'Closed', value: 'CLOSED' }
 ]
 
 const IssueStatusFilter = () => {
-    const router =useRouter()
+  const router = useRouter()
+  const searchParams = useSearchParams()
+
   return (
-   <Select.Root
-  onValueChange={(status) => {
-    const query =
-      status === 'ALL'
-        ? ''
-        : `?status=${status}`
+    <Select.Root
+      defaultValue={searchParams.get('status') || 'ALL'}
+      onValueChange={(status) => {
 
-    router.push(`/issues${query}`)
-  }}
->
-  <Select.Trigger placeholder="Filter By Status..." />
+        const params = new URLSearchParams()
 
-  <Select.Content>
-    {statuses.map((status) => (
-      <Select.Item
-        key={status.lable}
-        value={status.value}
-      >
-        {status.lable}
-      </Select.Item>
-    ))}
-  </Select.Content>
-</Select.Root>
+        if (status !== 'ALL')
+          params.append('status', status)
+
+        if (searchParams.get('orderBy'))
+          params.append('orderBy', searchParams.get('orderBy')!)
+
+        const query = params.size
+          ? '?' + params.toString()
+          : ''
+
+        router.push(`/issues${query}`)
+
+      }}
+    >
+      <Select.Trigger placeholder="Filter By Status..." />
+
+      <Select.Content>
+        {statuses.map((status) => (
+          <Select.Item
+            key={status.lable}
+            value={status.value}
+          >
+            {status.lable}
+          </Select.Item>
+        ))}
+      </Select.Content>
+    </Select.Root>
   )
 }
 
