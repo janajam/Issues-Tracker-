@@ -7,7 +7,7 @@ export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
 
   session: {
-    strategy: "jwt", // ✅ THIS is what you add
+    strategy: "jwt",
   },
 
   providers: [
@@ -17,7 +17,7 @@ export const authOptions: NextAuthOptions = {
       authorization: {
         params: {
           prompt: "select_account",
-        },
+        }
       },
       httpOptions: {
         timeout: 20000,
