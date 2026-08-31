@@ -61,7 +61,7 @@ const IssuesPage = async ({ searchParams }: Props) => {
                          {column.label}
                     </NextLink>
                   {column.value=== searchParams.orderBy && <ArrowUpIcon className='inline'/>}
-                </Table.ColumnHeaderCell>
+              </Table.ColumnHeaderCell>
               ))
             }
           </Table.Row>
